@@ -1,3 +1,3 @@
-variable "web_region" {
+variable "region" {
     default = "ap-south-1"
 }

@@ -11,21 +11,34 @@ terraform {
      region = "ap-south-1"
   }
 }
-
 # Configure the  AWS Provider
 provider "aws" {
    region     = var.web_region
-  # access_key = var.access_key
-  # secret_key = var.secret_key
+ #  access_key = var.access_key
+ #  secret_key = var.secret_key
 }
-
-module "ec2" {
-  source      = "../modules/vm"
-  vpc_security_groupids = "${module.securitygrp.security_groupid}"
+module "ec2Machines" {
+  source      = "../modules/virtualMachine"
+  vpc_security_groupids = "${module.securitygroups.security_groupid}"
   }
-
-module "securitygrp" {
-  source      = "../modules/sg"
-
- 
+module "securitygroups" {
+  source      = "../modules/securityGroup" 
+}
+module "awsvpc" {
+  source      = "../modules/vpc"
+  }
+module "routetables" {
+  source      = "../modules/routeTable" 
+  awsvpcid = "${module.awsvpc.awsvpc_id}"
+  subnetid = "${module.subnets.subnetids}"
+  internet_gateway = "${module.internetgateways.internet_gateway_id}"
+  
+}
+module "internetgateways" {
+  source      = "../modules/internetGateway"
+  awsvpcid = "${module.awsvpc.awsvpc_id}"
+  }
+module "subnets" {
+  source      = "../modules/subnet"
+  awsvpcid = "${module.awsvpc.awsvpc_id}" 
 }
