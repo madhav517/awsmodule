@@ -15,8 +15,8 @@ terraform {
 # Configure the  AWS Provider
 provider "aws" {
    region     = var.web_region
-   access_key = var.access_key
-   secret_key = var.secret_key
+  # access_key = var.access_key
+  # secret_key = var.secret_key
 }
 
 module "ec2" {
